@@ -1,0 +1,43 @@
+RewriteEngine on
+# Redirect from http to https
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
+
+
+# Redirect to PHP if it exists.
+# e.g. example.com/foo will display the contents of example.com/foo.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f 
+RewriteRule ^(.+)$ $1.php [L,QSA]
+
+
+
+# Rewrite for article.php?aid=xxxxx
+# RewriteRule ^article/([0-9a-zA-Z]+)$ article.php?aid=$1 [NC,L]
+
+# Rewrite for user.php?u=xxxxx
+# RewriteRule ^user/([0-9a-zA-Z]+)$ user.php?u=$1 [NC,L]
+
+# Rewrite for article.php?id=1&title=Title-Goes-Here
+RewriteRule ^content/([0-9]+)/([0-9a-zA-Z_-]+)$ article.php?aid=$1&title=$2 [NC,L]
+RewriteRule ^videos/([0-9a-zA-Z_-]+)$ video.php?pid=$1 [NC,L]
+RewriteRule ^topic/([0-9a-zA-Z_-]+)$ topic-page.php?topicId=$1 [NC,L]
+
+# RewriteRule ^search/([a-zA-Z0-9-/]+)$ search-page.php?query=$1[NC,L]
+
+RewriteEngine on
+RewriteCond %{THE_REQUEST} /(?:search-page)?\?a=search&query=(.+)\sHTTP [NC]
+RewriteRule ^ /agent-portal/search/%1? [NE,L,R]
+RewriteRule ^search/(\w+) search-page?a=search&query=$1
+
+
+
+RewriteCond %{THE_REQUEST} /(?:e_centre-search)?\?s=esearch&q=(.+)\sHTTP [NC]
+RewriteRule ^ /agent-portal/esearch/%1? [NE,L,R]
+RewriteRule ^esearch/(\w+) e_centre-search?s=esearch&q=$1
+
+
+
+
+
